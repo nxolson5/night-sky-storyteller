@@ -3,13 +3,16 @@ import math
 from datetime import datetime, date as date_type
 from typing import Any, Dict, List
 
-PLANET_LORE = {
-    "Mercury": "messenger of the gods, swift and elusive",
-    "Venus": "goddess of love and beauty, the brightest wanderer",
-    "Mars": "god of war, red and restless",
-    "Jupiter": "king of the gods, vast and commanding",
-    "Saturn": "lord of time, ringed and mysterious",
+PLANET_FACTS = {
+    "Mercury": "smallest planet, no atmosphere, surface temperatures swing 600°C between day and night",
+    "Venus": "hottest planet (465°C), thick CO₂ atmosphere, rotates backwards, brighter than any star",
+    "Mars": "half Earth's diameter, home to Olympus Mons (3× Everest), thin CO₂ atmosphere, red from iron oxide",
+    "Jupiter": "largest planet, 1,300 Earths could fit inside, the Great Red Spot is a storm older than 350 years",
+    "Saturn": "least dense planet — it would float on water, rings are 90% water ice, 146 known moons",
 }
+
+# AU to light-minutes conversion
+_AU_TO_LIGHT_MIN = 8.317
 
 
 def get_sky_data(lat: float, lon: float, target_date: date_type = None) -> Dict[str, Any]:
@@ -24,7 +27,10 @@ def get_sky_data(lat: float, lon: float, target_date: date_type = None) -> Dict[
     waxing = float(moon_tomorrow.phase) > float(moon.phase)
 
     moon_alt = math.degrees(float(moon.alt))
+    moon_dist_km = round(float(moon.earth_distance) * 149_597_870.7)
 
+    season = _get_season(lat, target_date)
+    hemisphere = "Northern" if lat >= 0 else "Southern"
     visible_planets = _get_visible_planets(obs)
 
     return {
@@ -34,11 +40,13 @@ def get_sky_data(lat: float, lon: float, target_date: date_type = None) -> Dict[
             "visible": moon_alt > 0,
             "altitude": round(moon_alt, 1),
             "waxing": waxing,
+            "distance_km": moon_dist_km,
         },
         "planets": visible_planets,
-        "season": _get_season(lat, target_date),
+        "season": season,
+        "constellations": _seasonal_constellations(season, hemisphere),
         "date_str": datetime(target_date.year, target_date.month, target_date.day).strftime("%B %d, %Y"),
-        "hemisphere": "Northern" if lat >= 0 else "Southern",
+        "hemisphere": hemisphere,
         "lat": lat,
         "lon": lon,
     }
@@ -66,11 +74,19 @@ def _get_visible_planets(obs: ephem.Observer) -> List[Dict[str, Any]]:
     for name, body in bodies.items():
         alt = math.degrees(float(body.alt))
         if alt > 5:
+            dist_au = round(float(body.earth_distance), 3)
+            try:
+                constellation = ephem.constellation(body)[1]
+            except Exception:
+                constellation = "unknown"
             visible.append({
                 "name": name,
                 "altitude": round(alt, 1),
                 "magnitude": round(float(body.mag), 1),
-                "lore": PLANET_LORE[name],
+                "earth_distance_au": dist_au,
+                "light_minutes": round(dist_au * _AU_TO_LIGHT_MIN, 1),
+                "constellation": constellation,
+                "facts": PLANET_FACTS[name],
             })
 
     visible.sort(key=lambda p: p["altitude"], reverse=True)
@@ -87,6 +103,30 @@ def _moon_phase_name(phase: float, waxing: bool) -> str:
     if phase < 98:
         return "Waxing Gibbous" if waxing else "Waning Gibbous"
     return "Full Moon"
+
+
+_SEASONAL_CONSTELLATIONS = {
+    "Spring": {
+        "Northern": ["Leo", "Virgo", "Boötes", "Hydra", "Cancer"],
+        "Southern": ["Centaurus", "Crux", "Vela", "Carina", "Corvus"],
+    },
+    "Summer": {
+        "Northern": ["Scorpius", "Sagittarius", "Cygnus", "Lyra", "Aquila", "Hercules"],
+        "Southern": ["Scorpius", "Sagittarius", "Centaurus", "Lupus", "Corona Australis"],
+    },
+    "Autumn": {
+        "Northern": ["Pegasus", "Andromeda", "Perseus", "Cassiopeia", "Aries"],
+        "Southern": ["Grus", "Piscis Austrinus", "Sculptor", "Phoenix", "Fornax"],
+    },
+    "Winter": {
+        "Northern": ["Orion", "Taurus", "Gemini", "Canis Major", "Canis Minor", "Auriga"],
+        "Southern": ["Orion", "Taurus", "Canis Major", "Puppis", "Pictor", "Columba"],
+    },
+}
+
+
+def _seasonal_constellations(season: str, hemisphere: str) -> List[str]:
+    return _SEASONAL_CONSTELLATIONS.get(season, {}).get(hemisphere, [])
 
 
 def _get_season(lat: float, d: date_type) -> str:

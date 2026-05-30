@@ -49,7 +49,7 @@ with st.sidebar:
     selected_date = st.date_input("Date", value=date.today())
     style = st.selectbox(
         "Narrative Style",
-        ["Poetic", "Mythological", "Scientific", "Children's Story"],
+        ["Sky Guide", "Poetic", "Mythological", "Children's Story"],
     )
     st.divider()
     generate = st.button("Generate Sky Story", type="primary")
