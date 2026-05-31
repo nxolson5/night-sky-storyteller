@@ -10,6 +10,64 @@
   <link rel="stylesheet" href="/static/css/main.css" />
   <link rel="stylesheet" href="/static/css/solar-system.css" />
   <link rel="stylesheet" href="/static/css/panel.css" />
+  <style>
+    .study-nav {
+      position: absolute;
+      right: 120px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      pointer-events: all;
+    }
+    .study-nav a {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 8px 14px;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+      white-space: nowrap;
+    }
+    .study-nav a.enoch-link {
+      background: rgba(212,175,55,0.08);
+      border: 1px solid rgba(212,175,55,0.3);
+      color: rgba(212,175,55,0.85);
+    }
+    .study-nav a.enoch-link:hover {
+      background: rgba(212,175,55,0.15);
+      border-color: rgba(212,175,55,0.6);
+      color: #d4af37;
+    }
+    .study-nav a.bible-link {
+      background: rgba(139,124,248,0.08);
+      border: 1px solid rgba(139,124,248,0.3);
+      color: rgba(139,124,248,0.85);
+    }
+    .study-nav a.bible-link:hover {
+      background: rgba(139,124,248,0.15);
+      border-color: rgba(139,124,248,0.6);
+      color: #8b7cf8;
+    }
+    .study-nav a.mythology-link {
+      background: rgba(78,204,163,0.08);
+      border: 1px solid rgba(78,204,163,0.3);
+      color: rgba(78,204,163,0.85);
+    }
+    .study-nav a.mythology-link:hover {
+      background: rgba(78,204,163,0.15);
+      border-color: rgba(78,204,163,0.6);
+      color: #4ecca3;
+    }
+  </style>
 </head>
 <body>
 
@@ -24,6 +82,11 @@
       <h1 class="site-title">SOLAR SYSTEM <span>EXPLORER</span></h1>
       <p class="site-subtitle">Our corner of the cosmos — to scale, in real time</p>
     </div>
+    <nav class="study-nav">
+      <a href="/enoch" class="enoch-link">✦ Book of Enoch</a>
+      <a href="/bible" class="bible-link">☩ The Bible</a>
+      <a href="/mythology" class="mythology-link">✧ Mythology</a>
+    </nav>
   </header>
 
   <!-- Planet count badge (top right) -->

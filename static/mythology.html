@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cosmic Mythology — Solar System Explorer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/static/css/deep-dive.css"/>
+  <style>
+    :root {
+      --accent:      #4ecca3;
+      --accent-dim:  rgba(78,204,163,0.25);
+      --accent-glow: rgba(78,204,163,0.35);
+    }
+
+    .hero-bg {
+      background:
+        radial-gradient(ellipse 60% 55% at 70% 50%, rgba(78,204,163,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 45% 65% at 8% 75%,  rgba(10,80,60,0.3) 0%, transparent 55%),
+        linear-gradient(150deg, #030612 0%, #050f0d 50%, #030810 100%);
+    }
+
+    /* Galaxy spiral hero art */
+    .galaxy-art {
+      position: relative;
+      width: 340px; height: 340px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .galaxy-ring {
+      position: absolute; border-radius: 50%;
+      border: 1px solid rgba(78,204,163,0.12);
+    }
+    .galaxy-ring-1 { width: 320px; height: 320px; animation: spin 90s linear infinite; border-style: dashed; }
+    .galaxy-ring-2 { width: 240px; height: 240px; border-color: rgba(78,204,163,0.18); animation: spin 55s linear infinite reverse; }
+    .galaxy-ring-3 { width: 160px; height: 160px; border-color: rgba(78,204,163,0.28); animation: spin 30s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Culture dots — 8 cultures on outer ring */
+    .galaxy-cultures { position: absolute; width: 320px; height: 320px; animation: spin 90s linear infinite; }
+    .culture-dot {
+      position: absolute; width: 8px; height: 8px; border-radius: 50%;
+      top: -4px; left: 50%; transform-origin: 0 164px;
+    }
+    .culture-dot:nth-child(1) { background: #d4af37; box-shadow: 0 0 6px #d4af37; transform: translateX(-50%) rotate(0deg);    }
+    .culture-dot:nth-child(2) { background: #e07a5f; box-shadow: 0 0 6px #e07a5f; transform: translateX(-50%) rotate(45deg);   }
+    .culture-dot:nth-child(3) { background: #81b29a; box-shadow: 0 0 6px #81b29a; transform: translateX(-50%) rotate(90deg);   }
+    .culture-dot:nth-child(4) { background: #f2cc8f; box-shadow: 0 0 6px #f2cc8f; transform: translateX(-50%) rotate(135deg);  }
+    .culture-dot:nth-child(5) { background: #c77dff; box-shadow: 0 0 6px #c77dff; transform: translateX(-50%) rotate(180deg);  }
+    .culture-dot:nth-child(6) { background: #ff6b6b; box-shadow: 0 0 6px #ff6b6b; transform: translateX(-50%) rotate(225deg);  }
+    .culture-dot:nth-child(7) { background: #4fc3f7; box-shadow: 0 0 6px #4fc3f7; transform: translateX(-50%) rotate(270deg);  }
+    .culture-dot:nth-child(8) { background: #a8dadc; box-shadow: 0 0 6px #a8dadc; transform: translateX(-50%) rotate(315deg);  }
+
+    .galaxy-center {
+      position: absolute;
+      font-size: 40px; color: #4ecca3;
+      text-shadow: 0 0 20px rgba(78,204,163,0.8), 0 0 50px rgba(78,204,163,0.4);
+      animation: pulse-g 4s ease-in-out infinite;
+    }
+    @keyframes pulse-g {
+      0%,100% { text-shadow: 0 0 20px rgba(78,204,163,0.8), 0 0 50px rgba(78,204,163,0.4); }
+      50%      { text-shadow: 0 0 35px rgba(78,204,163,1),   0 0 80px rgba(78,204,163,0.6); }
+    }
+
+    /* Culture-specific accent colors */
+    .c-greek    { --c: #e07a5f; }
+    .c-norse    { --c: #81b29a; }
+    .c-egyptian { --c: #f2cc8f; }
+    .c-babylon  { --c: #d4af37; }
+    .c-hindu    { --c: #c77dff; }
+    .c-indigenous { --c: #ff6b6b; }
+
+    .culture-tag { background: rgba(78,204,163,0.06); border-color: var(--accent-dim); }
+
+    .cult-section { margin-bottom: 8px; }
+    .cult-accent {
+      display: inline-block;
+      width: 10px; height: 10px; border-radius: 50%;
+      margin-right: 8px; vertical-align: middle;
+      flex-shrink: 0;
+    }
+
+    /* Planet deity comparison table */
+    .planet-table-wrap { overflow-x: auto; margin: 20px 0; }
+
+    /* Milky Way names grid */
+    .mw-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 10px;
+      margin: 20px 0;
+    }
+    .mw-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+      display: grid;
+      grid-template-columns: 32px 1fr;
+      gap: 12px;
+      align-items: start;
+    }
+    .mw-flag { font-size: 22px; line-height: 1; }
+    .mw-culture {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 9px;
+      color: var(--accent);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+    .mw-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .mw-meaning {
+      font-size: 11px;
+      color: var(--text-dim);
+      line-height: 1.4;
+    }
+
+    /* Hindu time scale viz */
+    .time-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin: 20px 0;
+    }
+    .time-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .time-label {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 9px;
+      color: var(--accent);
+      width: 130px;
+      flex-shrink: 0;
+      letter-spacing: 0.08em;
+    }
+    .time-bar-wrap { flex: 1; background: rgba(255,255,255,0.04); border-radius: 3px; height: 8px; }
+    .time-bar {
+      height: 100%; border-radius: 3px;
+      background: linear-gradient(90deg, var(--accent), rgba(78,204,163,0.4));
+    }
+    .time-value {
+      font-size: 10px;
+      color: var(--text-dim);
+      width: 130px;
+      flex-shrink: 0;
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+<div class="stars-layer stars-small"></div>
+<div class="stars-layer stars-medium"></div>
+<div class="stars-layer stars-large"></div>
+
+<div class="dd-page">
+
+<nav class="dd-nav">
+  <a href="/" class="dd-back"><span class="dd-back-arrow">←</span> Solar System</a>
+  <div class="dd-nav-chapters">
+    <a href="#ch-intro"      class="dd-nav-ch">The Sky as Story</a>
+    <a href="#ch-greek"      class="dd-nav-ch">Greek &amp; Roman</a>
+    <a href="#ch-norse"      class="dd-nav-ch">Norse</a>
+    <a href="#ch-egyptian"   class="dd-nav-ch">Egyptian</a>
+    <a href="#ch-babylon"    class="dd-nav-ch">Mesopotamian</a>
+    <a href="#ch-hindu"      class="dd-nav-ch">Hindu</a>
+    <a href="#ch-indigenous" class="dd-nav-ch">Indigenous</a>
+    <a href="#ch-milkyway"   class="dd-nav-ch">The Milky Way</a>
+  </div>
+</nav>
+
+<section class="dd-hero">
+  <div class="hero-bg"></div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-eyebrow">Cross-Cultural Cosmology · Every Civilization</div>
+      <h1 class="hero-title">Cosmic<br><span>Mythology</span></h1>
+      <p class="hero-desc">
+        Before telescopes, mathematics, or writing itself, every human culture looked up and told
+        a story. From Greek Olympians to Hindu cosmic cycles to Aboriginal dark constellations —
+        how the world's civilisations explained the universe above them.
+      </p>
+      <div class="hero-pills">
+        <div class="hero-pill"><span class="pill-label">Cultures covered</span><span class="pill-value">8 traditions</span></div>
+        <div class="hero-pill"><span class="pill-label">Milky Way names</span><span class="pill-value">10+ languages</span></div>
+        <div class="hero-pill"><span class="pill-label">Oldest tradition</span><span class="pill-value">65,000+ yrs (Aboriginal)</span></div>
+        <div class="hero-pill"><span class="pill-label">Shared object</span><span class="pill-value">All 8 named the Milky Way</span></div>
+      </div>
+      <div class="hero-scroll">Scroll to explore</div>
+    </div>
+    <div class="hero-art">
+      <div class="galaxy-art">
+        <div class="galaxy-ring galaxy-ring-1"></div>
+        <div class="galaxy-ring galaxy-ring-2"></div>
+        <div class="galaxy-ring galaxy-ring-3"></div>
+        <div class="galaxy-cultures">
+          <div class="culture-dot"></div><div class="culture-dot"></div>
+          <div class="culture-dot"></div><div class="culture-dot"></div>
+          <div class="culture-dot"></div><div class="culture-dot"></div>
+          <div class="culture-dot"></div><div class="culture-dot"></div>
+        </div>
+        <div class="galaxy-center">✧</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="dd-main">
+  <aside class="dd-sidebar">
+    <div class="sidebar-label">Chapters</div>
+    <ul class="sidebar-nav">
+      <li><a href="#ch-intro"><span class="sidebar-num">01</span> The Sky as Story</a></li>
+      <li><a href="#ch-greek"><span class="sidebar-num">02</span> Greek &amp; Roman</a></li>
+      <li><a href="#ch-norse"><span class="sidebar-num">03</span> Norse</a></li>
+      <li><a href="#ch-egyptian"><span class="sidebar-num">04</span> Egyptian</a></li>
+      <li><a href="#ch-babylon"><span class="sidebar-num">05</span> Mesopotamian</a></li>
+      <li><a href="#ch-hindu"><span class="sidebar-num">06</span> Hindu</a></li>
+      <li><a href="#ch-indigenous"><span class="sidebar-num">07</span> Indigenous</a></li>
+      <li><a href="#ch-milkyway"><span class="sidebar-num">08</span> The Milky Way</a></li>
+    </ul>
+  </aside>
+
+  <div class="dd-content">
+
+    <!-- 01 -->
+    <section class="dd-chapter" id="ch-intro">
+      <div class="chapter-label">01 &nbsp; Introduction</div>
+      <h2 class="chapter-title">The Sky as Story</h2>
+      <p class="dd-prose">Before telescopes, before mathematics, before writing itself, human beings looked up. Every culture on Earth independently developed stories to explain the sun, moon, stars, and the great river of light we now call the Milky Way. These myths were not childish guesses — they were the first attempts to impose meaning on a cosmos that was vast, indifferent, and overwhelming.</p>
+      <div class="dd-stat-row">
+        <div class="dd-stat"><span class="dd-stat-value">∞</span><span class="dd-stat-label">Every known culture developed a cosmology</span></div>
+        <div class="dd-stat"><span class="dd-stat-value">65k</span><span class="dd-stat-label">Years of Aboriginal sky knowledge</span></div>
+        <div class="dd-stat"><span class="dd-stat-value">1200</span><span class="dd-stat-label">BCE — oldest star catalogue (Babylon)</span></div>
+        <div class="dd-stat"><span class="dd-stat-value">8</span><span class="dd-stat-label">Distinct traditions explored here</span></div>
+      </div>
+      <p class="dd-prose">Cosmic mythology served practical purposes: it encoded agricultural calendars, guided navigation, ordered religious festivals, and explained eclipses and meteor showers. But it also addressed deeper questions — where did we come from, what are we made of, and what happens when the stars go out?</p>
+      <div class="key-point">
+        <div class="key-point-label">Universal Pattern</div>
+        <p>The same constellations were independently "discovered" and named by cultures with no contact with each other. The Pleiades are referenced in Aboriginal Australian, Greek, Māori, Norse, Hindu, and Inca traditions — always as something significant, always in the sky above them all.</p>
+      </div>
+    </section>
+
+    <!-- 02 -->
+    <section class="dd-chapter" id="ch-greek">
+      <div class="chapter-label">02 &nbsp; Greece &amp; Rome</div>
+      <h2 class="chapter-title">Greek &amp; Roman</h2>
+      <div class="culture-tag c-greek">⚡ Greece · Rome</div>
+      <p class="dd-prose">Greek cosmology began with <em>Chaos</em> — a formless void — from which emerged Gaia (Earth), Tartarus (Underworld), Eros (Love), Erebus (Darkness), and Nyx (Night). Every planet in our solar system still bears a Roman name, making Greek mythology the most permanently embedded of all in modern astronomy.</p>
+
+      <div class="entity-list">
+        <div class="entity-card">
+          <div class="entity-sigil">🌞</div>
+          <div class="entity-info">
+            <div class="entity-name">Helios / Sol</div>
+            <div class="entity-role">God of the Sun</div>
+            <div class="entity-desc">Helios drives a golden chariot pulled by four fire-breathing horses across the sky each day, descending into the Ocean at night. His son Phaethon famously lost control — scorching the earth, an early mythological account of solar catastrophe.</div>
+          </div>
+        </div>
+        <div class="entity-card">
+          <div class="entity-sigil">🌙</div>
+          <div class="entity-info">
+            <div class="entity-name">Selene / Luna</div>
+            <div class="entity-role">Goddess of the Moon</div>
+            <div class="entity-desc">Selene drives a silver chariot pulled by two white horses. She fell in love with the mortal Endymion, whom Zeus put into eternal sleep so she could visit him nightly — explaining the moon's nightly passage across the sky.</div>
+          </div>
+        </div>
+        <div class="entity-card">
+          <div class="entity-sigil">🌐</div>
+          <div class="entity-info">
+            <div class="entity-name">Atlas</div>
+            <div class="entity-role">Titan who bears the heavens</div>
+            <div class="entity-desc">Condemned to hold up the celestial sphere on his shoulders for eternity — the ancient personification of the axis around which the stars revolve. The word "atlas" (map of the world) comes from his name.</div>
+          </div>
+        </div>
+        <div class="entity-card">
+          <div class="entity-sigil">🌌</div>
+          <div class="entity-info">
+            <div class="entity-name">The Milky Way's Origin</div>
+            <div class="entity-role">Hera's Spilled Milk</div>
+            <div class="entity-desc">Hermes placed the infant Heracles at Hera's breast while she slept. When she woke and pulled away, her milk sprayed across the sky — forming the galaxy. The Greek <em>galaxias kyklos</em> ("milky circle") gave us the words "galaxy" and "Milky Way."</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dd-quote">
+        <p>"The Milky Way, that broad white shining band — Hera's spilled milk, scattered across heaven's vault."</p>
+        <cite>— Ovid, Metamorphoses</cite>
+      </div>
+    </section>
+
+    <!-- 03 -->
+    <section class="dd-chapter" id="ch-norse">
+      <div class="chapter-label">03 &nbsp; Scandinavia</div>
+      <h2 class="chapter-title">Norse</h2>
+      <div class="culture-tag c-norse">🌲 Norse · Germanic</div>
+      <p class="dd-prose">Norse cosmology is among the most elaborate in the ancient world. At its center stands <em>Yggdrasil</em>, the World Tree — an immense ash connecting nine realms, its roots reaching into the wells of fate, frost-giants, and the dead; its branches sheltering the heavens where the gods dwell in Asgard.</p>
+
+      <div class="entity-list">
+        <div class="entity-card">
+          <div class="entity-sigil">☀️</div>
+          <div class="entity-info">
+            <div class="entity-name">Sól &amp; Máni</div>
+            <div class="entity-role">The Sun &amp; Moon</div>
+            <div class="entity-desc">Siblings driving their chariots endlessly across the sky, pursued by two wolves — Sköll chases the sun, Hati chases the moon. At Ragnarök they will finally be caught and devoured, and the sky will go dark before the new world rises.</div>
+          </div>
+        </div>
+        <div class="entity-card">
+          <div class="entity-sigil">🐍</div>
+          <div class="entity-info">
+            <div class="entity-name">Jörmungandr</div>
+            <div class="entity-role">The World Serpent</div>
+            <div class="entity-desc">The Midgard Serpent lies coiled around the entire earth in the ocean, biting its own tail — the Ouroboros, a near-universal symbol of cyclical time, the boundary of the world, and eternal return.</div>
+          </div>
+        </div>
+        <div class="entity-card">
+          <div class="entity-sigil">❄️</div>
+          <div class="entity-info">
+            <div class="entity-name">Ginnungagap &amp; Creation</div>
+            <div class="entity-role">Creation from Void</div>
+            <div class="entity-desc">In the beginning there was only Ginnungagap (the void), ice from Niflheim in the north, and fire from Muspelheim in the south. Where they met, the first giant Ymir formed — creation by collision of opposites, matching modern descriptions of the early universe.</div>
+          </div>
+        </div>
+        <div class="entity-card">
+          <div class="entity-sigil">💥</div>
+          <div class="entity-info">
+            <div class="entity-name">Ragnarök</div>
+            <div class="entity-role">The Twilight of the Gods</div>
+            <div class="entity-desc">The Norse apocalypse involves full cosmic collapse: the sun and moon eaten, stars fall, Yggdrasil shakes, the sea swallows the land — and then a new, renewed world emerges from the waters. Cyclical destruction and rebirth.</div>
+          </div>
+        </div>
+      </div>
+      <p class="dd-prose">The Norse Milky Way was called <em>Vintergatan</em> ("Winter Road") — a path souls traveled after death, or the route of the Wild Hunt riding across the winter sky.</p>
+    </section>
+
+    <!-- 04 -->
+    <section class="dd-chapter" id="ch-egyptian">
+      <div class="chapter-label">04 &nbsp; Egypt</div>
+      <h2 class="chapter-title">Egyptian</h2>
+      <div class="culture-tag c-egyptian">𓂀 Ancient Egypt · c. 3100 BCE</div>
+      <p class="dd-prose">Egyptian cosmology is one of the oldest on record, with texts dating to 2400 BCE and earlier. The sky itself was a goddess — <em>Nut</em> — arching her star-covered body over the earth, swallowing the sun each evening and giving birth to it each morning. Her body was the Milky Way.</p>
+
+      <div class="entity-list">
+        <div class="entity-card">
+          <div class="entity-sigil">🌅</div>
+          <div class="entity-info">
+            <div class="entity-name">Ra / Amun-Ra</div>
+            <div class="entity-role">The Sun God</div>
+            <div class="entity-desc">Ra travels through the sky in his solar barque each day. At sunset he enters the Duat (underworld), battling the chaos serpent Apophis through twelve hours of darkness. His nightly victory and rebirth at dawn is the cosmic cycle underlying all Egyptian religion.</div>
+          </div>
+        </div>
+        <div class="entity-card">
+          <div class="entity-sigil">🌌</div>
+          <div class="entity-info">
+            <div class="entity-name">Nut</div>
+            <div class="entity-role">Goddess of the Sky</div>
+            <div class="entity-desc">Nut's body arches over the earth; her fingertips touch the western horizon, her toes the eastern. The stars are decorations on her body. She swallows the sun at sunset and births it at dawn. Her arching form is the Milky Way.</div>
+          </div>
+        </div>
+        <div class="entity-card">
+          <div class="entity-sigil">⭐</div>
+          <div class="entity-info">
+            <div class="entity-name">Osiris &amp; Orion</div>
+            <div class="entity-role">Death, Resurrection, &amp; the Stars</div>
+            <div class="entity-desc">Osiris was identified with Orion — his soul rises to the stars. The pyramids of Giza are aligned with Orion's Belt; their shafts point toward specific circumpolar stars. The pharaoh's soul would travel to the stars that never set for eternal life.</div>
+          </div>
+        </div>
+        <div class="entity-card">
+          <div class="entity-sigil">🌙</div>
+          <div class="entity-info">
+            <div class="entity-name">Thoth</div>
+            <div class="entity-role">God of the Moon, Writing, &amp; Time</div>
+            <div class="entity-desc">The ibis-headed Thoth governed the moon and invented writing. He measured time with the lunar calendar and recorded the weighing of souls. The moon's phases were explained as Thoth playing senet (draughts) with the moon itself.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dd-quote">
+        <p>"I am Nut, and I enfold you and your divine essence. I have given you your life. You will live forever, for you are the son of Nut."</p>
+        <cite>— Pyramid Texts, c. 2400 BCE</cite>
+      </div>
+    </section>
+
+    <!-- 05 -->
+    <section class="dd-chapter" id="ch-babylon">
+      <div class="chapter-label">05 &nbsp; Mesopotamia</div>
+      <h2 class="chapter-title">Mesopotamian</h2>
+      <div class="culture-tag c-babylon">𒀭 Sumer · Babylon · Assyria</div>
+      <p class="dd-prose">Mesopotamia gave the world its first written astronomical records, its first star catalogues, and its first zodiac — all embedded in a mythological framework where the planets were gods and the sky was a divine text to be read. Our modern planet names descend directly from this tradition through Rome.</p>
+
+      <div class="dd-quote">
+        <p>"When the skies above were not yet named, nor earth below pronounced by name, Apsu, the first one, their begetter, and maker Tiamat, who bore them all, had mixed their waters together."</p>
+        <cite>— Enuma Elish, Tablet I</cite>
+      </div>
+
+      <div class="planet-table-wrap">
+        <table class="dd-table">
+          <thead>
+            <tr>
+              <th>Planet</th>
+              <th>Babylonian Deity</th>
+              <th>Roman Name</th>
+              <th>Domain</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>☿ Mercury</td>
+              <td>Nabu — divine scribe</td>
+              <td>Mercurius</td>
+              <td>Writing, wisdom, swift movement</td>
+            </tr>
+            <tr>
+              <td>♀ Venus</td>
+              <td>Ishtar — love &amp; war</td>
+              <td>Venus</td>
+              <td>Love, beauty, battle; morning &amp; evening star</td>
+            </tr>
+            <tr>
+              <td>♂ Mars</td>
+              <td>Nergal — war &amp; plague</td>
+              <td>Mars</td>
+              <td>War, death, disease; its redness = blood</td>
+            </tr>
+            <tr>
+              <td>♃ Jupiter</td>
+              <td>Marduk — king of the gods</td>
+              <td>Iuppiter</td>
+              <td>Kingship, justice, the brightest planet</td>
+            </tr>
+            <tr>
+              <td>♄ Saturn</td>
+              <td>Ninurta — agriculture &amp; war</td>
+              <td>Saturnus</td>
+              <td>Farming, time, the slowest visible planet</td>
+            </tr>
+            <tr>
+              <td>☽ Moon</td>
+              <td>Sin / Nanna — the moon god</td>
+              <td>Luna</td>
+              <td>Time, months, wisdom; father of the sun</td>
+            </tr>
+            <tr>
+              <td>☉ Sun</td>
+              <td>Shamash — justice &amp; truth</td>
+              <td>Sol</td>
+              <td>Law, truth, light; the great judge of heaven</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="dd-prose">After the god Marduk defeats the chaos-dragon Tiamat, he splits her body in two: one half becomes the sky (holding back the upper waters), the other becomes the earth. He then creates the stars, assigning each a station and setting the year — the oldest surviving creation-by-astronomical-ordering myth.</p>
+    </section>
+
+    <!-- 06 -->
+    <section class="dd-chapter" id="ch-hindu">
+      <div class="chapter-label">06 &nbsp; India</div>
+      <h2 class="chapter-title">Hindu</h2>
+      <div class="culture-tag c-hindu">🕉 Hindu · Vedic · c. 1500 BCE</div>
+      <p class="dd-prose">Hindu cosmology operates on a scale that dwarfs most other traditions. The universe cycles endlessly through vast spans of time — a <em>kalpa</em> (one "day of Brahma") lasts 4.32 billion years, remarkably close to the current scientific estimate for the age of the Earth.</p>
+
+      <div class="dd-visual">
+        <div class="dd-visual-title">Hindu Cosmic Time Scale</div>
+        <div class="time-scale">
+          <div class="time-row">
+            <div class="time-label">Human Year</div>
+            <div class="time-bar-wrap"><div class="time-bar" style="width:0.5%"></div></div>
+            <div class="time-value">365 days</div>
+          </div>
+          <div class="time-row">
+            <div class="time-label">Kali Yuga</div>
+            <div class="time-bar-wrap"><div class="time-bar" style="width:2%"></div></div>
+            <div class="time-value">432,000 years</div>
+          </div>
+          <div class="time-row">
+            <div class="time-label">Dwapara Yuga</div>
+            <div class="time-bar-wrap"><div class="time-bar" style="width:4%"></div></div>
+            <div class="time-value">864,000 years</div>
+          </div>
+          <div class="time-row">
+            <div class="time-label">Treta Yuga</div>
+            <div class="time-bar-wrap"><div class="time-bar" style="width:8%"></div></div>
+            <div class="time-value">1.296 million years</div>
+          </div>
+          <div class="time-row">
+            <div class="time-label">Satya Yuga</div>
+            <div class="time-bar-wrap"><div class="time-bar" style="width:16%"></div></div>
+            <div class="time-value">1.728 million years</div>
+          </div>
+          <div class="time-row">
+            <div class="time-label">One Mahayuga</div>
+            <div class="time-bar-wrap"><div class="time-bar" style="width:30%"></div></div>
+            <div class="time-value">4.32 million years</div>
+          </div>
+          <div class="time-row">
+            <div class="time-label">One Day of Brahma</div>
+            <div class="time-bar-wrap"><div class="time-bar" style="width:65%"></div></div>
+            <div class="time-value">4.32 billion years</div>
+          </div>
+          <div class="time-row">
+            <div class="time-label">Age of Universe</div>
+            <div class="time-bar-wrap"><div class="time-bar" style="width:100%;background:linear-gradient(90deg,var(--accent),rgba(78,204,163,0.5))"></div></div>
+            <div class="time-value">13.8 billion years</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="entity-list">
+        <div class="entity-card">
+          <div class="entity-sigil">🌊</div>
+          <div class="entity-info">
+            <div class="entity-name">Samudra Manthan</div>
+            <div class="entity-role">The Churning of the Cosmic Ocean</div>
+            <div class="entity-desc">Gods and demons churned the primordial cosmic ocean using Mount Meru as a churning rod and the serpent Vasuki as a rope — producing the moon, the sun, Lakshmi, and amrita (the nectar of immortality). Often interpreted as a metaphor for the rotation of the galaxy.</div>
+          </div>
+        </div>
+        <div class="entity-card">
+          <div class="entity-sigil">🌑</div>
+          <div class="entity-info">
+            <div class="entity-name">Rahu &amp; Ketu</div>
+            <div class="entity-role">The Lunar Nodes — Causers of Eclipses</div>
+            <div class="entity-desc">The demon Svarbhanu drank the nectar of immortality. Vishnu beheaded him, but both the head (Rahu) and tail (Ketu) became immortal. They periodically swallow the sun and moon in revenge — causing eclipses — before releasing them.</div>
+          </div>
+        </div>
+        <div class="entity-card">
+          <div class="entity-sigil">☀️</div>
+          <div class="entity-info">
+            <div class="entity-name">Surya</div>
+            <div class="entity-role">The Sun God</div>
+            <div class="entity-desc">Surya rides a golden chariot pulled by seven horses (often interpreted as the seven colors of visible light, or the seven days of the week). His charioteer Aruna is the dawn; his path encodes the solar year.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 07 -->
+    <section class="dd-chapter" id="ch-indigenous">
+      <div class="chapter-label">07 &nbsp; Indigenous Traditions</div>
+      <h2 class="chapter-title">Indigenous Star Lore</h2>
+      <div class="culture-tag c-indigenous">🌏 Aboriginal · Māori · Navajo · Inca</div>
+      <p class="dd-prose">Some of the most sophisticated observational astronomy in the ancient world came from indigenous cultures. Aboriginal Australians developed the world's oldest continuous astronomical tradition — at least 65,000 years of sky-watching encoded in oral traditions, songs, and ceremony.</p>
+
+      <div class="entity-list">
+        <div class="entity-card">
+          <div class="entity-sigil">🦅</div>
+          <div class="entity-info">
+            <div class="entity-name">Aboriginal Dark Constellations</div>
+            <div class="entity-role">Australia — 65,000+ year tradition</div>
+            <div class="entity-desc">While most cultures saw constellations in bright stars, Aboriginal Australians also identified "dark constellations" — shapes formed by the dark dust clouds of the Milky Way. The Emu in the Sky: its body is the dark nebula between the Southern Cross and Scorpius. When the Emu constellation is overhead, emu eggs appear on the ground — a precise harvest calendar encoded in the sky.</div>
+          </div>
+        </div>
+        <div class="entity-card">
+          <div class="entity-sigil">⭐</div>
+          <div class="entity-info">
+            <div class="entity-name">Māori Navigation &amp; Matariki</div>
+            <div class="entity-role">Polynesia — Stars as Ancestors</div>
+            <div class="entity-desc">The Māori navigated the Pacific using star paths, ocean swells, and bird flight. Matariki (the Pleiades) marks the Māori New Year — its heliacal rising in mid-winter signals a time to remember the dead and plan for the new season. Stars are treated as ancestors.</div>
+          </div>
+        </div>
+        <div class="entity-card">
+          <div class="entity-sigil">🦊</div>
+          <div class="entity-info">
+            <div class="entity-name">Navajo Night Sky</div>
+            <div class="entity-role">Southwest North America</div>
+            <div class="entity-desc">The Holy People arranged the stars deliberately. The Milky Way (Yikáísdáhí, "that which awaits the dawn") is a spirit road. When the trickster Coyote grew impatient during star-placing, he grabbed the blanket and threw the remaining stars up at random — creating the scattered faint star field we see today.</div>
+          </div>
+        </div>
+        <div class="entity-card">
+          <div class="entity-sigil">🌄</div>
+          <div class="entity-info">
+            <div class="entity-name">Inca Ceque System</div>
+            <div class="entity-role">Andes — Cosmic Calendar in Stone</div>
+            <div class="entity-desc">The Inca organised their capital Cusco as a cosmic map, with 41 ceque lines radiating from the Temple of the Sun to 328 sacred sites. This encoded the solar and lunar calendar, agricultural cycles, and risings of the Pleiades — used to predict harvest yields years in advance.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dd-quote">
+        <p>"We do not see the stars as separate. They are our ancestors, looking down. We navigate by them, we pray by them, we time our planting by them."</p>
+        <cite>— Attributed to Polynesian navigator tradition</cite>
+      </div>
+    </section>
+
+    <!-- 08 -->
+    <section class="dd-chapter" id="ch-milkyway">
+      <div class="chapter-label">08 &nbsp; Our Galaxy</div>
+      <h2 class="chapter-title">The Milky Way Across Cultures</h2>
+      <p class="dd-prose">The great band of light stretching across the night sky — our galaxy seen edge-on from within — may be the single most universally mythologised feature of the night sky. Every culture gave it a name, a story, and a meaning. The word "galaxy" itself is a myth made permanent in language.</p>
+
+      <div class="mw-grid">
+        <div class="mw-card">
+          <div class="mw-flag">🏛️</div>
+          <div>
+            <div class="mw-culture">Greek</div>
+            <div class="mw-name">Galaxias Kyklos</div>
+            <div class="mw-meaning">Hera's spilled milk — giving us the words "galaxy" and "Milky Way"</div>
+          </div>
+        </div>
+        <div class="mw-card">
+          <div class="mw-flag">🛡️</div>
+          <div>
+            <div class="mw-culture">Norse</div>
+            <div class="mw-name">Vintergatan</div>
+            <div class="mw-meaning">"Winter Road" — path of the dead, or route of the Wild Hunt</div>
+          </div>
+        </div>
+        <div class="mw-card">
+          <div class="mw-flag">𓂀</div>
+          <div>
+            <div class="mw-culture">Egyptian</div>
+            <div class="mw-name">Body of Nut</div>
+            <div class="mw-meaning">The sky goddess's body arched across the heavens; her stars, her skin</div>
+          </div>
+        </div>
+        <div class="mw-card">
+          <div class="mw-flag">🌵</div>
+          <div>
+            <div class="mw-culture">Navajo</div>
+            <div class="mw-name">Yikáísdáhí</div>
+            <div class="mw-meaning">"That which awaits the dawn" — a spirit road across the sky</div>
+          </div>
+        </div>
+        <div class="mw-card">
+          <div class="mw-flag">🐉</div>
+          <div>
+            <div class="mw-culture">Chinese</div>
+            <div class="mw-name">Tiān Hé</div>
+            <div class="mw-meaning">"Heavenly River" — separating the Weaver Girl (Vega) from the Cowherd (Altair)</div>
+          </div>
+        </div>
+        <div class="mw-card">
+          <div class="mw-flag">🌸</div>
+          <div>
+            <div class="mw-culture">Japanese</div>
+            <div class="mw-name">Amanogawa</div>
+            <div class="mw-meaning">"River of Heaven" — celebrated at Tanabata when Vega and Altair draw closest</div>
+          </div>
+        </div>
+        <div class="mw-card">
+          <div class="mw-flag">🦙</div>
+          <div>
+            <div class="mw-culture">Inca</div>
+            <div class="mw-name">Mayu</div>
+            <div class="mw-meaning">"Celestial River" — with dark cloud constellations (Llama, Toad, Fox) along its banks</div>
+          </div>
+        </div>
+        <div class="mw-card">
+          <div class="mw-flag">🐦</div>
+          <div>
+            <div class="mw-culture">Finnish</div>
+            <div class="mw-name">Linnunrata</div>
+            <div class="mw-meaning">"Path of the Birds" — the migratory route birds follow south; later confirmed accurate</div>
+          </div>
+        </div>
+        <div class="mw-card">
+          <div class="mw-flag">🦎</div>
+          <div>
+            <div class="mw-culture">Khoisan (Africa)</div>
+            <div class="mw-name">Backbone of the Night</div>
+            <div class="mw-meaning">The structural spine holding the sky above the earth — a literal cosmic skeleton</div>
+          </div>
+        </div>
+        <div class="mw-card">
+          <div class="mw-flag">🐦‍⬛</div>
+          <div>
+            <div class="mw-culture">Armenian</div>
+            <div class="mw-name">Archway of Straw</div>
+            <div class="mw-meaning">The god Vahagn stole straw from the Assyrian king and spilled it across the sky fleeing</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="key-point">
+        <div class="key-point-label">What This Tells Us</div>
+        <p>What is remarkable is not just the diversity of these interpretations, but the consistency of the impulse: to see pattern, to impose narrative, to connect the sky above to the world below. The scientific name — the Milky Way galaxy, from the Greek <em>galaxias</em> — is itself a myth made permanent in language, carrying an ancient story about a goddess's milk into every modern physics paper ever written.</p>
+      </div>
+
+      <div class="dd-quote">
+        <p>"Two things fill the mind with ever-increasing wonder and awe: the starry heavens above me and the moral law within me."</p>
+        <cite>— Immanuel Kant, Critique of Practical Reason (1788)</cite>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<footer class="dd-footer">
+  <a href="/" class="dd-footer-back">← Return to Solar System Explorer</a>
+  <span class="dd-footer-text">Cosmic Mythology · Cross-Cultural Cosmology</span>
+</footer>
+</div>
+
+<script>
+const chapters = document.querySelectorAll('.dd-chapter');
+const navLinks = document.querySelectorAll('.dd-nav-ch, .sidebar-nav a');
+function onScroll() {
+  let current = '';
+  chapters.forEach(ch => { if (window.scrollY >= ch.offsetTop - 100) current = ch.id; });
+  navLinks.forEach(a => { a.classList.toggle('active', a.getAttribute('href') === '#' + current); });
+}
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+</script>
+</body>
+</html>

@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The Bible — Solar System Explorer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/static/css/deep-dive.css"/>
+  <style>
+    :root {
+      --accent:      #8b7cf8;
+      --accent-dim:  rgba(139,124,248,0.25);
+      --accent-glow: rgba(139,124,248,0.35);
+    }
+
+    .hero-bg {
+      background:
+        radial-gradient(ellipse 65% 55% at 72% 48%, rgba(139,124,248,0.09) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 60% at 5% 80%, rgba(40,20,100,0.35) 0%, transparent 55%),
+        linear-gradient(155deg, #030612 0%, #080616 50%, #050310 100%);
+    }
+
+    /* Cosmic cross / radiant star hero art */
+    .bible-art {
+      position: relative;
+      width: 340px; height: 340px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .art-ring {
+      position: absolute; border-radius: 50%;
+      border: 1px solid rgba(139,124,248,0.15);
+    }
+    .art-ring-1 { width: 320px; height: 320px; animation: spin 100s linear infinite; }
+    .art-ring-2 { width: 240px; height: 240px; border-color: rgba(139,124,248,0.22); animation: spin 60s linear infinite reverse; }
+    .art-ring-3 { width: 160px; height: 160px; border-color: rgba(139,124,248,0.3); animation: spin 35s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Cross beams */
+    .art-cross {
+      position: absolute;
+      width: 320px; height: 320px;
+      animation: spin 100s linear infinite;
+    }
+    .art-cross::before, .art-cross::after {
+      content: '';
+      position: absolute;
+      background: linear-gradient(90deg, transparent, rgba(139,124,248,0.25), transparent);
+    }
+    .art-cross::before { width: 100%; height: 1px; top: 50%; left: 0; }
+    .art-cross::after  { width: 1px; height: 100%; left: 50%; top: 0;
+      background: linear-gradient(180deg, transparent, rgba(139,124,248,0.25), transparent); }
+
+    /* 12 dots for 12 tribes / months */
+    .art-dots { position: absolute; width: 240px; height: 240px; animation: spin 60s linear infinite reverse; }
+    .art-dot {
+      position: absolute; width: 5px; height: 5px; border-radius: 50%;
+      background: #8b7cf8; box-shadow: 0 0 6px 2px rgba(139,124,248,0.6);
+      top: -2.5px; left: 50%;
+      transform-origin: 0 122px;
+    }
+    .art-dot:nth-child(1)  { transform: translateX(-50%) rotate(0deg);   }
+    .art-dot:nth-child(2)  { transform: translateX(-50%) rotate(30deg);  }
+    .art-dot:nth-child(3)  { transform: translateX(-50%) rotate(60deg);  }
+    .art-dot:nth-child(4)  { transform: translateX(-50%) rotate(90deg);  }
+    .art-dot:nth-child(5)  { transform: translateX(-50%) rotate(120deg); }
+    .art-dot:nth-child(6)  { transform: translateX(-50%) rotate(150deg); }
+    .art-dot:nth-child(7)  { transform: translateX(-50%) rotate(180deg); }
+    .art-dot:nth-child(8)  { transform: translateX(-50%) rotate(210deg); }
+    .art-dot:nth-child(9)  { transform: translateX(-50%) rotate(240deg); }
+    .art-dot:nth-child(10) { transform: translateX(-50%) rotate(270deg); }
+    .art-dot:nth-child(11) { transform: translateX(-50%) rotate(300deg); }
+    .art-dot:nth-child(12) { transform: translateX(-50%) rotate(330deg); }
+
+    .art-center {
+      position: absolute;
+      font-size: 44px; color: #8b7cf8;
+      text-shadow: 0 0 20px rgba(139,124,248,0.8), 0 0 50px rgba(139,124,248,0.4);
+      animation: pulse-art 4s ease-in-out infinite;
+    }
+    @keyframes pulse-art {
+      0%,100% { text-shadow: 0 0 20px rgba(139,124,248,0.8), 0 0 50px rgba(139,124,248,0.4); }
+      50%      { text-shadow: 0 0 35px rgba(139,124,248,1),   0 0 80px rgba(139,124,248,0.6); }
+    }
+
+    /* Firmament cross-section diagram */
+    .firmament {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      margin: 24px 0;
+    }
+    .firm-layer {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 16px;
+      border-radius: 6px;
+      border: 1px solid rgba(139,124,248,0.1);
+      position: relative;
+      overflow: hidden;
+    }
+    .firm-layer::before {
+      content: '';
+      position: absolute; inset: 0;
+      opacity: 0.04;
+    }
+    .firm-layer.sky    { background: rgba(139,124,248,0.05); }
+    .firm-layer.sky::before    { background: linear-gradient(90deg, #8b7cf8, transparent); }
+    .firm-layer.vault  { background: rgba(100,80,200,0.08); border-color: rgba(139,124,248,0.3); }
+    .firm-layer.air    { background: rgba(60,80,160,0.05); }
+    .firm-layer.earth  { background: rgba(80,60,20,0.08); border-color: rgba(180,140,60,0.2); }
+    .firm-layer.sheol  { background: rgba(20,10,40,0.15); }
+    .firm-label {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      color: #8b7cf8;
+      width: 160px;
+      flex-shrink: 0;
+    }
+    .firm-desc {
+      font-size: 12px;
+      color: var(--text-dim);
+      line-height: 1.4;
+    }
+    .firm-icon {
+      font-size: 18px;
+      width: 28px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    /* Creation days strip */
+    .creation-days {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 8px;
+      margin: 24px 0;
+    }
+    .day-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top: 2px solid rgba(139,124,248,0.4);
+      border-radius: 6px;
+      padding: 12px 10px;
+      text-align: center;
+    }
+    .day-num {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 8px;
+      color: #8b7cf8;
+      opacity: 0.6;
+      letter-spacing: 0.1em;
+      margin-bottom: 6px;
+    }
+    .day-icon { font-size: 22px; display: block; margin-bottom: 6px; }
+    .day-label {
+      font-size: 10px;
+      color: var(--text-dim);
+      line-height: 1.3;
+    }
+
+    /* Events timeline */
+    .event-timeline {
+      position: relative;
+      padding-left: 24px;
+      margin: 24px 0;
+    }
+    .event-timeline::before {
+      content: '';
+      position: absolute;
+      left: 6px; top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, rgba(139,124,248,0.4), transparent);
+    }
+    .event-item {
+      position: relative;
+      margin-bottom: 20px;
+      padding: 14px 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    .event-item::before {
+      content: '';
+      position: absolute;
+      left: -21px; top: 18px;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: #8b7cf8;
+      box-shadow: 0 0 8px rgba(139,124,248,0.6);
+    }
+    .event-name {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      color: #8b7cf8;
+      margin-bottom: 2px;
+    }
+    .event-ref {
+      font-size: 10px;
+      color: rgba(139,124,248,0.5);
+      font-style: italic;
+      margin-bottom: 6px;
+    }
+    .event-desc {
+      font-size: 12px;
+      color: var(--text-dim);
+      line-height: 1.55;
+    }
+
+    /* Star pattern: Pleiades */
+    .constellation-wrap {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+      margin: 20px 0;
+    }
+    .constellation-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      flex: 1;
+      min-width: 200px;
+    }
+    .constellation-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 10px;
+      color: #8b7cf8;
+      letter-spacing: 0.1em;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+    .constellation-svg { display: block; margin: 0 auto; }
+  </style>
+</head>
+<body>
+<div class="stars-layer stars-small"></div>
+<div class="stars-layer stars-medium"></div>
+<div class="stars-layer stars-large"></div>
+
+<div class="dd-page">
+
+<nav class="dd-nav">
+  <a href="/" class="dd-back"><span class="dd-back-arrow">←</span> Solar System</a>
+  <div class="dd-nav-chapters">
+    <a href="#ch-what"         class="dd-nav-ch">What Is the Bible</a>
+    <a href="#ch-creation"     class="dd-nav-ch">Creation</a>
+    <a href="#ch-firmament"    class="dd-nav-ch">The Firmament</a>
+    <a href="#ch-constellations" class="dd-nav-ch">Stars &amp; Constellations</a>
+    <a href="#ch-events"       class="dd-nav-ch">Astronomical Events</a>
+    <a href="#ch-host"         class="dd-nav-ch">Heavenly Host</a>
+    <a href="#ch-prophecy"     class="dd-nav-ch">Prophetic Visions</a>
+    <a href="#ch-legacy"       class="dd-nav-ch">Legacy</a>
+  </div>
+</nav>
+
+<section class="dd-hero">
+  <div class="hero-bg"></div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-eyebrow">Sacred Cosmology · c. 1400 BCE – 100 CE</div>
+      <h1 class="hero-title">The <span>Bible</span></h1>
+      <p class="hero-desc">
+        The heavens declare the glory of God. From the six-day creation to the stars of Job,
+        from the solid firmament to the Star of Bethlehem — how the world's most influential
+        book describes the cosmos above us.
+      </p>
+      <div class="hero-pills">
+        <div class="hero-pill"><span class="pill-label">Books</span><span class="pill-value">66 (Protestant)</span></div>
+        <div class="hero-pill"><span class="pill-label">Languages</span><span class="pill-value">Hebrew, Aramaic, Greek</span></div>
+        <div class="hero-pill"><span class="pill-label">Written over</span><span class="pill-value">~1,500 years</span></div>
+        <div class="hero-pill"><span class="pill-label">Translations</span><span class="pill-value">3,600+ languages</span></div>
+      </div>
+      <div class="hero-scroll">Scroll to explore</div>
+    </div>
+    <div class="hero-art">
+      <div class="bible-art">
+        <div class="art-ring art-ring-1"></div>
+        <div class="art-cross"></div>
+        <div class="art-ring art-ring-2"></div>
+        <div class="art-ring art-ring-3"></div>
+        <div class="art-dots">
+          <div class="art-dot"></div><div class="art-dot"></div>
+          <div class="art-dot"></div><div class="art-dot"></div>
+          <div class="art-dot"></div><div class="art-dot"></div>
+          <div class="art-dot"></div><div class="art-dot"></div>
+          <div class="art-dot"></div><div class="art-dot"></div>
+          <div class="art-dot"></div><div class="art-dot"></div>
+        </div>
+        <div class="art-center">☩</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="dd-main">
+  <aside class="dd-sidebar">
+    <div class="sidebar-label">Chapters</div>
+    <ul class="sidebar-nav">
+      <li><a href="#ch-what"><span class="sidebar-num">01</span> What Is the Bible?</a></li>
+      <li><a href="#ch-creation"><span class="sidebar-num">02</span> Creation &amp; the Cosmos</a></li>
+      <li><a href="#ch-firmament"><span class="sidebar-num">03</span> The Firmament</a></li>
+      <li><a href="#ch-constellations"><span class="sidebar-num">04</span> Stars &amp; Constellations</a></li>
+      <li><a href="#ch-events"><span class="sidebar-num">05</span> Astronomical Events</a></li>
+      <li><a href="#ch-host"><span class="sidebar-num">06</span> Heavenly Host</a></li>
+      <li><a href="#ch-prophecy"><span class="sidebar-num">07</span> Prophetic Visions</a></li>
+      <li><a href="#ch-legacy"><span class="sidebar-num">08</span> Legacy</a></li>
+    </ul>
+  </aside>
+
+  <div class="dd-content">
+
+    <!-- 01 -->
+    <section class="dd-chapter" id="ch-what">
+      <div class="chapter-label">01 &nbsp; Overview</div>
+      <h2 class="chapter-title">What Is the Bible?</h2>
+      <p class="dd-prose">The Bible is a collection of 66 books written across roughly 1,500 years in Hebrew, Aramaic, and Greek. It is the best-selling and most translated book in human history, and the foundational text of Judaism and Christianity.</p>
+      <div class="dd-stat-row">
+        <div class="dd-stat"><span class="dd-stat-value">66</span><span class="dd-stat-label">Books (Protestant)</span></div>
+        <div class="dd-stat"><span class="dd-stat-value">3</span><span class="dd-stat-label">Original languages</span></div>
+        <div class="dd-stat"><span class="dd-stat-value">3,600+</span><span class="dd-stat-label">Languages translated into</span></div>
+        <div class="dd-stat"><span class="dd-stat-value">~1,500</span><span class="dd-stat-label">Years of composition</span></div>
+      </div>
+      <p class="dd-prose">The Old Testament (Hebrew Bible / Tanakh) contains the Torah (Law), Nevi'im (Prophets), and Ketuvim (Writings). The New Testament records the life of Jesus, the early church, letters to communities, and apocalyptic prophecy in Revelation.</p>
+      <ul class="dd-facts">
+        <li data-icon="☩">The Torah is shared as authoritative scripture by Judaism, Christianity, and Islam</li>
+        <li data-icon="☩">The oldest complete manuscript of the Hebrew Bible is the Leningrad Codex (1008–1009 CE)</li>
+        <li data-icon="☩">Dead Sea Scrolls (discovered 1947) contain fragments going back to the 3rd century BCE</li>
+        <li data-icon="☩">The Septuagint (LXX), a Greek translation begun c. 280 BCE in Alexandria, became the primary Bible of early Christianity</li>
+      </ul>
+    </section>
+
+    <!-- 02 -->
+    <section class="dd-chapter" id="ch-creation">
+      <div class="chapter-label">02 &nbsp; Origins</div>
+      <h2 class="chapter-title">Creation &amp; the Cosmos</h2>
+      <p class="dd-prose">Genesis 1 opens with one of the most influential cosmological statements ever written. In six days, God creates the heavens and the earth, separating light from darkness, waters above from waters below, and filling the world with life.</p>
+      <div class="creation-days">
+        <div class="day-card">
+          <div class="day-num">Day 1</div>
+          <span class="day-icon">💡</span>
+          <div class="day-label">Light &amp; Darkness separated</div>
+        </div>
+        <div class="day-card">
+          <div class="day-num">Day 2</div>
+          <span class="day-icon">🌊</span>
+          <div class="day-label">The firmament separates waters</div>
+        </div>
+        <div class="day-card">
+          <div class="day-num">Day 3</div>
+          <span class="day-icon">🌿</span>
+          <div class="day-label">Dry land &amp; vegetation</div>
+        </div>
+        <div class="day-card">
+          <div class="day-num">Day 4</div>
+          <span class="day-icon">☀️</span>
+          <div class="day-label">Sun, moon &amp; stars placed in the sky</div>
+        </div>
+        <div class="day-card">
+          <div class="day-num">Day 5</div>
+          <span class="day-icon">🐦</span>
+          <div class="day-label">Birds &amp; sea creatures</div>
+        </div>
+        <div class="day-card">
+          <div class="day-num">Day 6</div>
+          <span class="day-icon">🧑</span>
+          <div class="day-label">Land animals &amp; humanity in God's image</div>
+        </div>
+      </div>
+      <div class="dd-quote">
+        <p>"God made two great lights — the greater light to govern the day and the lesser light to govern the night. He also made the stars."</p>
+        <cite>— Genesis 1:16</cite>
+      </div>
+      <div class="key-point">
+        <div class="key-point-label">Notable Detail</div>
+        <p>The sun and moon are conspicuously unnamed in Genesis 1 — called only "the greater light" and "the lesser light." Ancient Near Eastern cultures deified these bodies under names like Shamash (sun) and Sin (moon). The deliberate avoidance of their names may be a theological statement: they are lamps God created, not gods.</p>
+      </div>
+    </section>
+
+    <!-- 03 -->
+    <section class="dd-chapter" id="ch-firmament">
+      <div class="chapter-label">03 &nbsp; Cosmology</div>
+      <h2 class="chapter-title">The Firmament &amp; Ancient Cosmos</h2>
+      <p class="dd-prose">The biblical cosmos is a three-tiered structure. The Hebrew word <em>raqia</em> — translated "firmament" or "expanse" — is a solid dome separating the waters above from the earth below. Rain falls when God opens the "windows of heaven."</p>
+
+      <div class="dd-visual">
+        <div class="dd-visual-title">Ancient Biblical Cosmology — Cross Section</div>
+        <div class="firmament">
+          <div class="firm-layer sky">
+            <span class="firm-icon">🌌</span>
+            <span class="firm-label">Upper Waters</span>
+            <span class="firm-desc">Waters above the firmament — source of rain; the divine realm, throne of God</span>
+          </div>
+          <div class="firm-layer vault">
+            <span class="firm-icon">🔵</span>
+            <span class="firm-label">The Raqia (Firmament)</span>
+            <span class="firm-desc">Solid dome; sun, moon, and stars set within it like lights; "windows" opened for rain</span>
+          </div>
+          <div class="firm-layer air">
+            <span class="firm-icon">🌬️</span>
+            <span class="firm-label">Lower Atmosphere</span>
+            <span class="firm-desc">Wind, clouds, weather, birds — the breathable air between firmament and ground</span>
+          </div>
+          <div class="firm-layer earth">
+            <span class="firm-icon">🏔️</span>
+            <span class="firm-label">Earth</span>
+            <span class="firm-desc">Flat disk resting on pillars, surrounded by the great ocean; the seas, land, and mountains</span>
+          </div>
+          <div class="firm-layer sheol">
+            <span class="firm-icon">🕳️</span>
+            <span class="firm-label">Sheol / The Deep</span>
+            <span class="firm-desc">The underworld realm of the dead; the subterranean ocean from which springs arise</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dd-quote">
+        <p>"He set the earth on its foundations; it can never be moved… He established the heavens, when he drew a circle on the face of the deep."</p>
+        <cite>— Psalm 104:5 / Proverbs 8:27</cite>
+      </div>
+      <ul class="dd-facts">
+        <li data-icon="☩">The "windows of heaven" open in Noah's flood (Genesis 7:11) — rain is stored water released from above</li>
+        <li data-icon="☩">Earth rests on pillars set in the deep (1 Samuel 2:8, Job 9:6)</li>
+        <li data-icon="☩">This cosmological model was shared across ancient Mesopotamia, Egypt, and Canaan</li>
+        <li data-icon="☩">Proverbs 8:27 describes God drawing "a circle on the face of the deep" — some scholars read this as a spherical earth, others as a cosmic horizon</li>
+      </ul>
+    </section>
+
+    <!-- 04 -->
+    <section class="dd-chapter" id="ch-constellations">
+      <div class="chapter-label">04 &nbsp; Star Lore</div>
+      <h2 class="chapter-title">Stars &amp; Constellations</h2>
+      <p class="dd-prose">The Bible contains some of the earliest named references to constellations in any literature. The book of Job — one of the oldest texts in the Bible — names several star groups and challenges the reader with their mysteries.</p>
+
+      <div class="dd-quote">
+        <p>"Can you bind the chains of the Pleiades? Can you loosen Orion's belt? Can you bring forth the constellations in their seasons or lead out the Bear with its cubs?"</p>
+        <cite>— Job 38:31–32</cite>
+      </div>
+
+      <div class="constellation-wrap">
+        <div class="constellation-box">
+          <div class="constellation-title">Pleiades (Kimah)</div>
+          <svg class="constellation-svg" width="120" height="100" viewBox="0 0 120 100">
+            <line x1="40" y1="55" x2="55" y2="45" stroke="rgba(139,124,248,0.3)" stroke-width="1"/>
+            <line x1="55" y1="45" x2="72" y2="50" stroke="rgba(139,124,248,0.3)" stroke-width="1"/>
+            <line x1="55" y1="45" x2="60" y2="30" stroke="rgba(139,124,248,0.3)" stroke-width="1"/>
+            <line x1="60" y1="30" x2="75" y2="25" stroke="rgba(139,124,248,0.3)" stroke-width="1"/>
+            <line x1="72" y1="50" x2="80" y2="38" stroke="rgba(139,124,248,0.3)" stroke-width="1"/>
+            <circle cx="40" cy="55" r="3" fill="#8b7cf8" opacity="0.9"/>
+            <circle cx="55" cy="45" r="4" fill="#8b7cf8" opacity="0.9"/>
+            <circle cx="72" cy="50" r="3" fill="#8b7cf8" opacity="0.8"/>
+            <circle cx="60" cy="30" r="4" fill="#8b7cf8" opacity="0.9"/>
+            <circle cx="75" cy="25" r="3" fill="#8b7cf8" opacity="0.7"/>
+            <circle cx="80" cy="38" r="3" fill="#8b7cf8" opacity="0.8"/>
+            <circle cx="48" cy="35" r="2.5" fill="#8b7cf8" opacity="0.6"/>
+          </svg>
+          <p style="font-size:11px;color:var(--text-dim);text-align:center;margin-top:8px;line-height:1.4">The "bound" cluster — rainy season marker in Canaan</p>
+        </div>
+        <div class="constellation-box">
+          <div class="constellation-title">Orion (Kesil)</div>
+          <svg class="constellation-svg" width="120" height="130" viewBox="0 0 120 130">
+            <!-- Belt -->
+            <line x1="38" y1="65" x2="55" y2="63" stroke="rgba(139,124,248,0.3)" stroke-width="1"/>
+            <line x1="55" y1="63" x2="72" y2="61" stroke="rgba(139,124,248,0.3)" stroke-width="1"/>
+            <!-- Shoulders -->
+            <line x1="38" y1="65" x2="28" y2="45" stroke="rgba(139,124,248,0.3)" stroke-width="1"/>
+            <line x1="72" y1="61" x2="85" y2="42" stroke="rgba(139,124,248,0.3)" stroke-width="1"/>
+            <!-- Head -->
+            <line x1="28" y1="45" x2="45" y2="28" stroke="rgba(139,124,248,0.3)" stroke-width="1"/>
+            <line x1="85" y1="42" x2="67" y2="26" stroke="rgba(139,124,248,0.3)" stroke-width="1"/>
+            <!-- Feet -->
+            <line x1="38" y1="65" x2="30" y2="90" stroke="rgba(139,124,248,0.3)" stroke-width="1"/>
+            <line x1="72" y1="61" x2="82" y2="88" stroke="rgba(139,124,248,0.3)" stroke-width="1"/>
+            <!-- Stars -->
+            <circle cx="38" cy="65" r="3.5" fill="#8b7cf8" opacity="0.9"/>
+            <circle cx="55" cy="63" r="3.5" fill="#8b7cf8" opacity="0.9"/>
+            <circle cx="72" cy="61" r="3.5" fill="#8b7cf8" opacity="0.9"/>
+            <circle cx="28" cy="45" r="4" fill="rgba(200,180,255,0.9)" opacity="0.9"/>
+            <circle cx="85" cy="42" r="5" fill="rgba(255,150,100,0.9)" opacity="0.9"/>
+            <circle cx="45" cy="28" r="2.5" fill="#8b7cf8" opacity="0.7"/>
+            <circle cx="67" cy="26" r="2.5" fill="#8b7cf8" opacity="0.7"/>
+            <circle cx="30" cy="90" r="3.5" fill="#8b7cf8" opacity="0.8"/>
+            <circle cx="82" cy="88" r="4" fill="rgba(130,180,255,0.9)" opacity="0.9"/>
+          </svg>
+          <p style="font-size:11px;color:var(--text-dim);text-align:center;margin-top:8px;line-height:1.4">Meaning "fool" or "giant" — associated with winter storms</p>
+        </div>
+      </div>
+
+      <div class="dd-card-grid">
+        <div class="dd-card">
+          <span class="dd-card-icon">✨</span>
+          <div class="dd-card-title">Pleiades (Kimah)</div>
+          <div class="dd-card-body">The "bound" cluster. God challenges Job: can you bind its chains? The Pleiades' rising marked the rainy season in Canaan.</div>
+        </div>
+        <div class="dd-card">
+          <span class="dd-card-icon">⚔️</span>
+          <div class="dd-card-title">Orion (Kesil)</div>
+          <div class="dd-card-body">Meaning "fool" or "giant" — loosening his belt is beyond human power. Associated with winter storms and brute strength.</div>
+        </div>
+        <div class="dd-card">
+          <span class="dd-card-icon">🐻</span>
+          <div class="dd-card-title">The Bear (Ash)</div>
+          <div class="dd-card-body">Likely Ursa Major — led across the northern sky with its cubs. The circumpolar stars that never set, always circling the pole.</div>
+        </div>
+        <div class="dd-card">
+          <span class="dd-card-icon">🌌</span>
+          <div class="dd-card-title">Mazzaroth</div>
+          <div class="dd-card-body">Job 38:32 — possibly the 12 zodiac signs or the full circuit of constellations. Their seasonal appearances are God's alone to orchestrate.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 -->
+    <section class="dd-chapter" id="ch-events">
+      <div class="chapter-label">05 &nbsp; Events</div>
+      <h2 class="chapter-title">Astronomical Events in Scripture</h2>
+      <p class="dd-prose">Several passages describe dramatic interventions in the normal behaviour of celestial bodies — events that have fascinated astronomers, historians, and theologians for centuries.</p>
+
+      <div class="event-timeline">
+        <div class="event-item">
+          <div class="event-name">Joshua's Long Day</div>
+          <div class="event-ref">Joshua 10:12–14</div>
+          <div class="event-desc">The sun "stood still" over Gibeon and the moon over the Valley of Aijalon for "about a full day." Proposed explanations include a solar eclipse, atmospheric refraction, poetic metaphor, or actual astronomical anomaly. Ancient Chinese and Egyptian records have been searched for corroborating events.</div>
+        </div>
+        <div class="event-item">
+          <div class="event-name">Hezekiah's Shadow</div>
+          <div class="event-ref">2 Kings 20:9–11 / Isaiah 38:8</div>
+          <div class="event-desc">As a sign to the dying King Hezekiah, the shadow on the sundial of Ahaz moved backward ten steps. Josephus and early interpreters debated whether this was a local miracle or a global astronomical reversal.</div>
+        </div>
+        <div class="event-item">
+          <div class="event-name">The Star of Bethlehem</div>
+          <div class="event-ref">Matthew 2:1–12</div>
+          <div class="event-desc">Magi from the east follow a star to Jesus' birthplace. Candidates include the Jupiter–Saturn conjunction of 7 BCE, a comet recorded by Chinese astronomers around 5 BCE, a nova, or Jupiter's retrograde motion through Virgo in 3–2 BCE. The debate remains open.</div>
+        </div>
+        <div class="event-item">
+          <div class="event-name">Darkness at the Crucifixion</div>
+          <div class="event-ref">Matthew 27:45 / Luke 23:44</div>
+          <div class="event-desc">Three hours of darkness over the land from noon to 3 PM. A solar eclipse is ruled out by chronology — Passover falls on a full moon, when a solar eclipse is impossible. Historians note a possible Mediterranean dust event; others treat it as a miraculous sign.</div>
+        </div>
+        <div class="event-item">
+          <div class="event-name">Blood Moon &amp; Solar Darkening</div>
+          <div class="event-ref">Joel 2:31 / Acts 2:20 / Revelation 6:12</div>
+          <div class="event-desc">Recurring prophetic imagery of the sun turning dark and the moon turning to blood — likely describing lunar eclipses (which give the moon a reddish hue) combined with volcanic dust or solar eclipse events as signs of the Day of the Lord.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 -->
+    <section class="dd-chapter" id="ch-host">
+      <div class="chapter-label">06 &nbsp; Celestial Beings</div>
+      <h2 class="chapter-title">The Heavenly Host</h2>
+      <p class="dd-prose">The term <em>heavenly host</em> (צְבָא הַשָּׁמַיִם) refers both to angels and to the stars themselves — the two were often synonymous. Worshipping the "host of heaven" is the most frequently condemned form of idolatry in the Old Testament.</p>
+
+      <div class="entity-list">
+        <div class="entity-card">
+          <div class="entity-sigil">🔥</div>
+          <div class="entity-info">
+            <div class="entity-name">Seraphim</div>
+            <div class="entity-role">Six-winged beings of the divine throne</div>
+            <div class="entity-desc">Surrounding God's throne in Isaiah 6, calling "Holy, holy, holy." Their name means "burning ones" — possibly connected to lightning or the stars.</div>
+          </div>
+        </div>
+        <div class="entity-card">
+          <div class="entity-sigil">👁️</div>
+          <div class="entity-info">
+            <div class="entity-name">Cherubim</div>
+            <div class="entity-role">Four-faced, four-winged guardians</div>
+            <div class="entity-desc">Guarding Eden, the Ark of the Covenant, and the divine throne. Ezekiel's vision makes them spectacularly cosmic: wheels within wheels covered in eyes, moving in all directions.</div>
+          </div>
+        </div>
+        <div class="entity-card">
+          <div class="entity-sigil">⚔️</div>
+          <div class="entity-info">
+            <div class="entity-name">Michael</div>
+            <div class="entity-role">Archangel, warrior, guardian of Israel</div>
+            <div class="entity-desc">"The great prince who protects your people" (Daniel 12:1). Leads the heavenly army against the dragon in Revelation 12:7. His name means "Who is like God?"</div>
+          </div>
+        </div>
+        <div class="entity-card">
+          <div class="entity-sigil">📣</div>
+          <div class="entity-info">
+            <div class="entity-name">Gabriel</div>
+            <div class="entity-role">Messenger, divine herald</div>
+            <div class="entity-desc">Brings news to Daniel, Zechariah (John's birth), and Mary (Jesus' birth). His name means "God is my strength." He stands "in the presence of God" — one of only four named angels in canonical scripture.</div>
+          </div>
+        </div>
+        <div class="entity-card">
+          <div class="entity-sigil">👑</div>
+          <div class="entity-info">
+            <div class="entity-name">Bene Elohim (Sons of God)</div>
+            <div class="entity-role">Divine council members</div>
+            <div class="entity-desc">Present themselves before God in Job 1–2; "shouted for joy" at creation (Job 38:7). In Genesis 6:1–4, some take human wives — the tradition expanded in 1 Enoch as the Watchers.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dd-quote">
+        <p>"Praise him, all his angels; praise him, all his heavenly hosts. Praise him, sun and moon; praise him, all you shining stars."</p>
+        <cite>— Psalm 148:2–3</cite>
+      </div>
+    </section>
+
+    <!-- 07 -->
+    <section class="dd-chapter" id="ch-prophecy">
+      <div class="chapter-label">07 &nbsp; Visions</div>
+      <h2 class="chapter-title">Prophetic &amp; Apocalyptic Visions</h2>
+      <p class="dd-prose">The prophetic books contain some of the most cosmically vivid writing in ancient literature. Ezekiel, Daniel, and Revelation describe heavenly realms and the ultimate fate of the cosmos in imagery that has captivated readers for millennia.</p>
+
+      <div class="dd-quote">
+        <p>"I looked, and I saw a windstorm coming out of the north — an immense cloud with flashing lightning and surrounded by brilliant light. The center of the fire looked like glowing metal, and in the fire was what looked like four living creatures."</p>
+        <cite>— Ezekiel 1:4–5</cite>
+      </div>
+
+      <div class="dd-card-grid">
+        <div class="dd-card">
+          <span class="dd-card-icon">🔥</span>
+          <div class="dd-card-title">Ezekiel's Chariot</div>
+          <div class="dd-card-body">Four living creatures bearing a crystal expanse, above which sits a sapphire throne. Wheels within wheels, covered in eyes. The Merkabah — the foundational vision of Jewish mysticism.</div>
+        </div>
+        <div class="dd-card">
+          <span class="dd-card-icon">👴</span>
+          <div class="dd-card-title">Daniel's Ancient of Days</div>
+          <div class="dd-card-body">God on a fiery throne, surrounded by the heavenly court. The "Son of Man" approaches on clouds to receive eternal dominion (Daniel 7:9–14) — one of the most influential passages in all apocalyptic literature.</div>
+        </div>
+        <div class="dd-card">
+          <span class="dd-card-icon">🐉</span>
+          <div class="dd-card-title">Revelation's Cosmic War</div>
+          <div class="dd-card-body">The dragon sweeps a third of the stars from heaven. The sun, moon, and stars are darkened or fall. Seven-sealed scrolls open to cosmic catastrophe. A woman clothed with the sun, standing on the moon.</div>
+        </div>
+        <div class="dd-card">
+          <span class="dd-card-icon">🌟</span>
+          <div class="dd-card-title">New Heavens &amp; New Earth</div>
+          <div class="dd-card-body">Isaiah 65:17 and Revelation 21 promise a complete cosmic renewal: the first heaven and earth pass away, replaced by a new creation — the ultimate end of the biblical cosmological narrative.</div>
+        </div>
+      </div>
+
+      <div class="dd-quote">
+        <p>"Then I saw a new heaven and a new earth, for the first heaven and the first earth had passed away, and there was no longer any sea."</p>
+        <cite>— Revelation 21:1</cite>
+      </div>
+    </section>
+
+    <!-- 08 -->
+    <section class="dd-chapter" id="ch-legacy">
+      <div class="chapter-label">08 &nbsp; Influence</div>
+      <h2 class="chapter-title">Legacy &amp; Influence</h2>
+      <p class="dd-prose">The Bible's influence on science, astronomy, law, art, literature, music, and political philosophy is without parallel. For over a millennium, the dominant model of the cosmos in Western civilisation was one in which a personal God created, ordered, and sustained the universe.</p>
+      <div class="dd-stat-row">
+        <div class="dd-stat"><span class="dd-stat-value">7</span><span class="dd-stat-label">Days in the week — from Genesis</span></div>
+        <div class="dd-stat"><span class="dd-stat-value">#1</span><span class="dd-stat-label">Best-selling book in history</span></div>
+        <div class="dd-stat"><span class="dd-stat-value">~800</span><span class="dd-stat-label">CE: First European universities founded on biblical learning</span></div>
+        <div class="dd-stat"><span class="dd-stat-value">5B+</span><span class="dd-stat-label">Copies printed</span></div>
+      </div>
+      <ul class="dd-facts">
+        <li data-icon="☩">The concept of "laws of nature" — essential to scientific thinking — has roots in the biblical idea of a rational Creator who orders the cosmos consistently</li>
+        <li data-icon="☩">Copernicus, Galileo, Kepler, Newton, and Faraday all operated within a theistic framework shaped by biblical cosmology</li>
+        <li data-icon="☩">The seven-day week, now universal across virtually all human cultures, derives directly from the Genesis creation account</li>
+        <li data-icon="☩">Homer, Dante, Milton, Shakespeare, Dostoevsky, Toni Morrison — the Western literary canon is incomprehensible without biblical literacy</li>
+        <li data-icon="☩">More hospitals, schools, and universities have been founded in the name of biblical teaching than any other single intellectual tradition</li>
+      </ul>
+      <div class="dd-quote">
+        <p>"The heavens declare the glory of God; the skies proclaim the work of his hands. Day after day they pour forth speech; night after night they reveal knowledge."</p>
+        <cite>— Psalm 19:1–2</cite>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<footer class="dd-footer">
+  <a href="/" class="dd-footer-back">← Return to Solar System Explorer</a>
+  <span class="dd-footer-text">The Bible · c. 1400 BCE – 100 CE</span>
+</footer>
+</div>
+
+<script>
+const chapters = document.querySelectorAll('.dd-chapter');
+const navLinks = document.querySelectorAll('.dd-nav-ch, .sidebar-nav a');
+function onScroll() {
+  let current = '';
+  chapters.forEach(ch => { if (window.scrollY >= ch.offsetTop - 100) current = ch.id; });
+  navLinks.forEach(a => { a.classList.toggle('active', a.getAttribute('href') === '#' + current); });
+}
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+</script>
+</body>
+</html>

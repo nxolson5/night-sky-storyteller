@@ -22,6 +22,18 @@ app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 def index():
     return FileResponse(STATIC_DIR / "index.html")
 
+@app.get("/enoch")
+def enoch_page():
+    return FileResponse(STATIC_DIR / "enoch.html")
+
+@app.get("/bible")
+def bible_page():
+    return FileResponse(STATIC_DIR / "bible.html")
+
+@app.get("/mythology")
+def mythology_page():
+    return FileResponse(STATIC_DIR / "mythology.html")
+
 
 @app.get("/api/planets")
 def get_all_planets():

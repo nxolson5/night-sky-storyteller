@@ -1,0 +1,357 @@
+/* ── Shared study-nav (Enoch + Bible buttons) ── */
+
+.study-nav {
+  position: absolute;
+  right: 120px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  pointer-events: all;
+}
+
+.study-btn-icon {
+  font-size: 11px;
+  opacity: 0.8;
+}
+
+/* ── Book of Enoch button ── */
+
+#enoch-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(212, 175, 55, 0.08);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  color: rgba(212, 175, 55, 0.85);
+  font-family: 'Orbitron', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 8px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+  white-space: nowrap;
+}
+
+#enoch-btn:hover {
+  background: rgba(212, 175, 55, 0.15);
+  border-color: rgba(212, 175, 55, 0.6);
+  color: #d4af37;
+}
+
+/* Panel */
+#enoch-panel {
+  position: fixed;
+  top: 0; left: -520px;
+  width: 480px;
+  max-width: 100vw;
+  height: 100vh;
+  background: #090c1f;
+  border-right: 1px solid rgba(212, 175, 55, 0.15);
+  z-index: 100;
+  overflow-y: auto;
+  transition: left 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(212, 175, 55, 0.3) transparent;
+}
+
+#enoch-panel.visible { left: 0; }
+
+#enoch-close {
+  position: sticky;
+  top: 16px;
+  float: right;
+  margin: 16px 16px 0 0;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(212, 175, 55, 0.5);
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s, color 0.2s;
+  z-index: 1;
+}
+
+#enoch-close:hover {
+  background: rgba(255,255,255,0.12);
+  color: #d4af37;
+}
+
+#enoch-content {
+  padding: 28px 28px 56px;
+  clear: both;
+}
+
+/* Header */
+.enoch-header {
+  margin-bottom: 28px;
+}
+
+.enoch-eyebrow {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 8px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(212, 175, 55, 0.5);
+  margin-bottom: 10px;
+}
+
+.enoch-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  color: #d4af37;
+  text-shadow: 0 0 24px rgba(212, 175, 55, 0.3);
+  margin-bottom: 6px;
+  line-height: 1.2;
+}
+
+.enoch-subtitle {
+  font-size: 12px;
+  color: rgba(212, 175, 55, 0.55);
+  font-style: italic;
+  line-height: 1.5;
+}
+
+/* TOC */
+.enoch-toc {
+  background: rgba(212, 175, 55, 0.04);
+  border: 1px solid rgba(212, 175, 55, 0.1);
+  border-radius: 6px;
+  padding: 14px 16px;
+  margin-bottom: 28px;
+}
+
+.enoch-toc-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(212, 175, 55, 0.45);
+  margin-bottom: 10px;
+}
+
+.enoch-toc-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.enoch-toc-list li a {
+  font-size: 11px;
+  color: rgba(212, 175, 55, 0.7);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.15s;
+}
+
+.enoch-toc-list li a:hover { color: #d4af37; }
+
+.enoch-toc-list li a::before {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 1px;
+  background: rgba(212, 175, 55, 0.3);
+  flex-shrink: 0;
+}
+
+/* Chapters */
+.enoch-chapter {
+  margin-bottom: 30px;
+}
+
+.enoch-chapter-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.enoch-chapter-number {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  color: rgba(212, 175, 55, 0.4);
+  letter-spacing: 0.15em;
+  padding-top: 2px;
+  flex-shrink: 0;
+}
+
+.enoch-chapter-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #d4af37;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+  padding-bottom: 8px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.enoch-chapter-toggle {
+  font-size: 10px;
+  color: rgba(212, 175, 55, 0.4);
+  transition: transform 0.2s;
+}
+
+.enoch-chapter.open .enoch-chapter-toggle {
+  transform: rotate(180deg);
+}
+
+.enoch-chapter-body {
+  display: none;
+  padding-left: 0;
+}
+
+.enoch-chapter.open .enoch-chapter-body {
+  display: block;
+}
+
+/* Quote block */
+.enoch-quote {
+  border-left: 2px solid rgba(212, 175, 55, 0.4);
+  padding: 10px 14px;
+  margin: 14px 0;
+  background: rgba(212, 175, 55, 0.04);
+  border-radius: 0 4px 4px 0;
+}
+
+.enoch-quote p {
+  font-size: 12px;
+  line-height: 1.8;
+  color: rgba(212, 175, 55, 0.8);
+  font-style: italic;
+}
+
+.enoch-quote cite {
+  display: block;
+  font-size: 10px;
+  color: rgba(212, 175, 55, 0.4);
+  margin-top: 6px;
+  font-style: normal;
+  letter-spacing: 0.1em;
+}
+
+/* Prose */
+.enoch-prose {
+  font-size: 13px;
+  line-height: 1.8;
+  color: #c8cce8;
+  margin-bottom: 14px;
+}
+
+/* Fact list */
+.enoch-facts {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.enoch-facts li {
+  font-size: 12px;
+  line-height: 1.6;
+  color: #c8cce8;
+  padding-left: 18px;
+  position: relative;
+}
+
+.enoch-facts li::before {
+  content: '✦';
+  position: absolute;
+  left: 0;
+  font-size: 8px;
+  color: rgba(212, 175, 55, 0.5);
+  top: 3px;
+}
+
+/* Divider */
+.enoch-divider {
+  border: none;
+  border-top: 1px solid rgba(212, 175, 55, 0.08);
+  margin: 28px 0;
+}
+
+/* Gate grid */
+.enoch-gate-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.enoch-gate-card {
+  background: rgba(212, 175, 55, 0.04);
+  border: 1px solid rgba(212, 175, 55, 0.1);
+  border-radius: 6px;
+  padding: 10px 12px;
+}
+
+.enoch-gate-label {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(212, 175, 55, 0.5);
+  margin-bottom: 4px;
+}
+
+.enoch-gate-value {
+  font-size: 11px;
+  color: #d4d8f0;
+  line-height: 1.4;
+}
+
+/* Watcher list */
+.enoch-watcher-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.enoch-watcher-card {
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(212, 175, 55, 0.08);
+  border-radius: 6px;
+  padding: 10px 14px;
+}
+
+.enoch-watcher-name {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: #d4af37;
+  margin-bottom: 3px;
+}
+
+.enoch-watcher-role {
+  font-size: 11px;
+  color: rgba(212, 175, 55, 0.55);
+  font-style: italic;
+  margin-bottom: 4px;
+}
+
+.enoch-watcher-note {
+  font-size: 11px;
+  color: #9ea4c0;
+  line-height: 1.5;
+}

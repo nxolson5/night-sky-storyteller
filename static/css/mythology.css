@@ -1,0 +1,312 @@
+/* ── Cosmic Mythology panel ── */
+
+#mythology-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(78, 204, 163, 0.08);
+  border: 1px solid rgba(78, 204, 163, 0.3);
+  color: rgba(78, 204, 163, 0.85);
+  font-family: 'Orbitron', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 8px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+  white-space: nowrap;
+}
+
+#mythology-btn:hover {
+  background: rgba(78, 204, 163, 0.15);
+  border-color: rgba(78, 204, 163, 0.6);
+  color: #4ecca3;
+}
+
+/* Panel */
+#mythology-panel {
+  position: fixed;
+  top: 0; left: -520px;
+  width: 480px;
+  max-width: 100vw;
+  height: 100vh;
+  background: #090c1f;
+  border-right: 1px solid rgba(78, 204, 163, 0.15);
+  z-index: 100;
+  overflow-y: auto;
+  transition: left 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(78, 204, 163, 0.3) transparent;
+}
+
+#mythology-panel.visible { left: 0; }
+
+#mythology-close {
+  position: sticky;
+  top: 16px;
+  float: right;
+  margin: 16px 16px 0 0;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(78, 204, 163, 0.5);
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s, color 0.2s;
+  z-index: 1;
+}
+
+#mythology-close:hover {
+  background: rgba(255,255,255,0.12);
+  color: #4ecca3;
+}
+
+#mythology-content {
+  padding: 28px 28px 56px;
+  clear: both;
+}
+
+/* Header */
+.myth-header { margin-bottom: 28px; }
+
+.myth-eyebrow {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 8px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(78, 204, 163, 0.5);
+  margin-bottom: 10px;
+}
+
+.myth-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  color: #4ecca3;
+  text-shadow: 0 0 24px rgba(78, 204, 163, 0.3);
+  margin-bottom: 6px;
+  line-height: 1.2;
+}
+
+.myth-subtitle {
+  font-size: 12px;
+  color: rgba(78, 204, 163, 0.55);
+  font-style: italic;
+  line-height: 1.5;
+}
+
+/* TOC */
+.myth-toc {
+  background: rgba(78, 204, 163, 0.04);
+  border: 1px solid rgba(78, 204, 163, 0.1);
+  border-radius: 6px;
+  padding: 14px 16px;
+  margin-bottom: 28px;
+}
+
+.myth-toc-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(78, 204, 163, 0.45);
+  margin-bottom: 10px;
+}
+
+.myth-toc-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.myth-toc-list li a {
+  font-size: 11px;
+  color: rgba(78, 204, 163, 0.7);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.15s;
+}
+
+.myth-toc-list li a:hover { color: #4ecca3; }
+
+.myth-toc-list li a::before {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 1px;
+  background: rgba(78, 204, 163, 0.3);
+  flex-shrink: 0;
+}
+
+/* Chapters */
+.myth-chapter { margin-bottom: 30px; }
+
+.myth-chapter-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.myth-chapter-number {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  color: rgba(78, 204, 163, 0.4);
+  letter-spacing: 0.15em;
+  padding-top: 2px;
+  flex-shrink: 0;
+}
+
+.myth-chapter-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #4ecca3;
+  border-bottom: 1px solid rgba(78, 204, 163, 0.15);
+  padding-bottom: 8px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.myth-chapter-toggle {
+  font-size: 10px;
+  color: rgba(78, 204, 163, 0.4);
+  transition: transform 0.2s;
+}
+
+.myth-chapter.open .myth-chapter-toggle { transform: rotate(180deg); }
+
+.myth-chapter-body { display: none; }
+.myth-chapter.open .myth-chapter-body { display: block; }
+
+/* Quote */
+.myth-quote {
+  border-left: 2px solid rgba(78, 204, 163, 0.4);
+  padding: 10px 14px;
+  margin: 14px 0;
+  background: rgba(78, 204, 163, 0.04);
+  border-radius: 0 4px 4px 0;
+}
+
+.myth-quote p {
+  font-size: 12px;
+  line-height: 1.8;
+  color: rgba(78, 204, 163, 0.85);
+  font-style: italic;
+}
+
+.myth-quote cite {
+  display: block;
+  font-size: 10px;
+  color: rgba(78, 204, 163, 0.4);
+  margin-top: 6px;
+  font-style: normal;
+  letter-spacing: 0.1em;
+}
+
+/* Prose */
+.myth-prose {
+  font-size: 13px;
+  line-height: 1.8;
+  color: #c8cce8;
+  margin-bottom: 14px;
+}
+
+/* Facts */
+.myth-facts {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.myth-facts li {
+  font-size: 12px;
+  line-height: 1.6;
+  color: #c8cce8;
+  padding-left: 18px;
+  position: relative;
+}
+
+.myth-facts li::before {
+  content: '✧';
+  position: absolute;
+  left: 0;
+  font-size: 9px;
+  color: rgba(78, 204, 163, 0.5);
+  top: 2px;
+}
+
+/* Divider */
+.myth-divider {
+  border: none;
+  border-top: 1px solid rgba(78, 204, 163, 0.08);
+  margin: 28px 0;
+}
+
+/* Deity grid */
+.myth-deity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.myth-deity-card {
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(78, 204, 163, 0.08);
+  border-radius: 6px;
+  padding: 10px 14px;
+}
+
+.myth-deity-name {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: #4ecca3;
+  margin-bottom: 2px;
+}
+
+.myth-deity-role {
+  font-size: 10px;
+  color: rgba(78, 204, 163, 0.5);
+  font-style: italic;
+  margin-bottom: 5px;
+}
+
+.myth-deity-note {
+  font-size: 11px;
+  color: #9ea4c0;
+  line-height: 1.5;
+}
+
+/* Culture tag */
+.myth-culture-tag {
+  display: inline-block;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 8px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(78, 204, 163, 0.6);
+  background: rgba(78, 204, 163, 0.07);
+  border: 1px solid rgba(78, 204, 163, 0.15);
+  padding: 2px 8px;
+  border-radius: 3px;
+  margin-bottom: 12px;
+}
