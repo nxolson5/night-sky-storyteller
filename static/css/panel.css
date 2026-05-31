@@ -1,0 +1,273 @@
+/* ── Planet info panel ── */
+#planet-panel {
+  position: fixed;
+  top: 0; right: -520px;
+  width: 480px;
+  max-width: 100vw;
+  height: 100vh;
+  background: var(--panel-bg, #0a0e24);
+  border-left: 1px solid var(--panel-border, rgba(79,195,247,0.15));
+  z-index: 100;
+  overflow-y: auto;
+  transition: right 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(79,195,247,0.3) transparent;
+}
+
+#planet-panel.visible { right: 0; }
+
+#panel-close {
+  position: sticky;
+  top: 16px;
+  float: right;
+  margin: 16px 16px 0 0;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: var(--text-dim, #7880a8);
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s, color 0.2s;
+  z-index: 1;
+}
+
+#panel-close:hover {
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+}
+
+#panel-content {
+  padding: 24px 28px 48px;
+  clear: both;
+}
+
+/* Panel header */
+.panel-planet-icon {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  margin-bottom: 16px;
+  box-shadow: 0 0 30px 10px var(--planet-glow, rgba(150,150,150,0.4));
+}
+
+.panel-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.panel-tagline {
+  font-size: 13px;
+  color: var(--accent, #4fc3f7);
+  margin-bottom: 24px;
+  line-height: 1.5;
+  font-style: italic;
+}
+
+/* Stats grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.stat-label {
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-dim, #7880a8);
+  margin-bottom: 4px;
+}
+
+.stat-value {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+}
+
+/* Size comparison bar */
+.size-compare {
+  margin-bottom: 24px;
+}
+
+.size-compare-label {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+}
+
+.size-bar-track {
+  height: 6px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+
+.size-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  background: var(--planet-color, #4fc3f7);
+}
+
+.size-compare-note {
+  font-size: 10px;
+  color: var(--text-dim);
+}
+
+/* Sections */
+.panel-section {
+  margin-bottom: 24px;
+}
+
+.panel-section-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent, #4fc3f7);
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(79,195,247,0.15);
+}
+
+.panel-prose {
+  font-size: 13px;
+  line-height: 1.75;
+  color: var(--text, #d4d8f0);
+}
+
+/* Features list */
+.feature-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.feature-list li {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text);
+  padding-left: 16px;
+  position: relative;
+}
+
+.feature-list li::before {
+  content: '›';
+  position: absolute;
+  left: 0;
+  color: var(--accent, #4fc3f7);
+  font-weight: bold;
+}
+
+/* Moons */
+.moon-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.moon-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 6px;
+  padding: 8px 12px;
+}
+
+.moon-name {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 3px;
+}
+
+.moon-note {
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--text-dim);
+}
+
+.no-moons {
+  font-size: 12px;
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+/* Fun facts */
+.fact-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fact-list li {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text);
+  background: rgba(79,195,247,0.04);
+  border-left: 2px solid var(--accent, #4fc3f7);
+  padding: 6px 10px;
+  border-radius: 0 4px 4px 0;
+}
+
+/* Exploration */
+.exploration-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.exploration-list li {
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--text-dim);
+  padding-left: 16px;
+  position: relative;
+}
+
+.exploration-list li::before {
+  content: '🛸';
+  position: absolute;
+  left: 0;
+  font-size: 10px;
+}
+
+/* Temp range badge */
+.temp-range {
+  display: inline-block;
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+
+/* Loading state */
+.panel-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: var(--text-dim);
+  font-size: 13px;
+  letter-spacing: 0.1em;
+}

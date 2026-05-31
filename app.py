@@ -1,6 +1,7 @@
 import os
 from datetime import date
 
+import anthropic
 import streamlit as st
 from dotenv import load_dotenv
 
@@ -88,6 +89,16 @@ else:
             with st.spinner("Weaving your sky story..."):
                 try:
                     narrative = generate_narrative(sky_data, location_input, style)
+                except anthropic.BadRequestError as e:
+                    if "credit balance is too low" in str(e):
+                        st.error(
+                            "Your Anthropic account has insufficient credits. "
+                            "Add credits at console.anthropic.com/settings/billing, "
+                            "then try again."
+                        )
+                    else:
+                        st.error(f"API error: {e}")
+                    st.stop()
                 except ValueError as e:
                     st.error(str(e))
                     st.stop()

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solar System Explorer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/css/main.css" />
+  <link rel="stylesheet" href="/static/css/solar-system.css" />
+  <link rel="stylesheet" href="/static/css/panel.css" />
+</head>
+<body>
+
+  <!-- Starfield layers -->
+  <div class="stars-layer stars-small"></div>
+  <div class="stars-layer stars-medium"></div>
+  <div class="stars-layer stars-large"></div>
+
+  <!-- Header -->
+  <header id="site-header">
+    <div class="header-inner">
+      <h1 class="site-title">SOLAR SYSTEM <span>EXPLORER</span></h1>
+      <p class="site-subtitle">Our corner of the cosmos — to scale, in real time</p>
+    </div>
+  </header>
+
+  <!-- Planet count badge (top right) -->
+  <div id="planet-count">
+    <strong>8</strong>
+    Planets
+  </div>
+
+  <!-- Bottom hint -->
+  <div id="hint-bar">Click any planet to explore</div>
+
+  <!-- Solar system container -->
+  <main id="orrery-container">
+    <div id="solar-system">
+      <div class="sun">
+        <div class="sun-corona"></div>
+      </div>
+      <!-- Planets are injected by solar-system.js -->
+    </div>
+  </main>
+
+  <!-- Planet info panel -->
+  <aside id="planet-panel">
+    <button id="panel-close" aria-label="Close panel">✕</button>
+    <div id="panel-content">
+      <!-- Filled by panel.js -->
+    </div>
+  </aside>
+
+  <!-- Zoom clone anchor (injected by app.js) -->
+  <div id="zoom-clone-container"></div>
+
+  <script src="/static/js/solar-system.js"></script>
+  <script src="/static/js/panel.js"></script>
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
